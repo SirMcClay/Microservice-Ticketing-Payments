@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 declare global {
 	namespace NodeJS {
 		interface Global {
-			signin(): string[];
+			signin(id?: string): string[];
 		}
 	}
 }
