@@ -11,7 +11,7 @@ import { Order } from '../models/order';
 const router = express.Router();
 
 router.post(
-	'/app/payments',
+	'/api/payments',
 	requireAuth,
 	[body('token').not().isEmpty(), body('orderId').not().isEmpty()],
 	validateRequest,
