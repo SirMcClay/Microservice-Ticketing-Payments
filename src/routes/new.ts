@@ -19,3 +19,5 @@ router.post(
 		res.send({ success: true });
 	}
 );
+
+export { router as createChargeRouter })
