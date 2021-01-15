@@ -32,3 +32,21 @@ const setup = async () => {
 
 	return { listener, order, data, msg };
 };
+
+it('updates the status of the order', async () => {
+	const { listener, order, data, msg } = await setup();
+
+	await listener.onMessage(data, msg);
+
+	const updatedOrder = await Order.findById(order.id);
+
+	expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
+});
+
+it('acks the message', async () => {
+	const { listener, order, data, msg } = await setup();
+
+	await listener.onMessage(data, msg);
+
+	expect(msg.ack).toHaveBeenCalled();
+});
