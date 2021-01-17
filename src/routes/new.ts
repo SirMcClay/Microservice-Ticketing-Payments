@@ -8,6 +8,7 @@ import {
 	NotAuthorizedError,
 	OrderStatus,
 } from '@sirmctickets/commontickets';
+import { stripe } from '../stripe';
 import { Order } from '../models/order';
 
 const router = express.Router();
@@ -33,6 +34,20 @@ router.post(
 		if (order.status === OrderStatus.Cancelled) {
 			throw new BadRequestError('Cannot pay for an cancelled order');
 		}
+
+		// `source` is obtained with Stripe.js; see https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token
+		// const charge = await stripe.charges.create({
+		// 	amount: 2000,
+		// 	currency: 'brl',
+		// 	source: 'tok_visa',
+		// 	description: 'My First Test Charge (created for API docs)',
+		// });
+
+		await stripe.charges.create({
+			currency: 'usd',
+			amount: order.price * 100,
+			source: token,
+		});
 
 		res.send({ success: true });
 	}
